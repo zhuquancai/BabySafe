@@ -1,0 +1,27 @@
+name: 编译BabySafe
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: 下载源码
+      uses: actions/checkout@v4
+
+    - name: 安装编译环境
+      run: |
+        choco install mingw -y
+
+    - name: 编译游戏
+      run: |
+        g++ src/main.cpp src/adb.cpp src/action.cpp src/config.cpp -o BabySafe.exe -static
+
+    - name: 保存程序
+      uses: actions/upload-artifact@v4
+      with:
+        name: BabySafe程序
+        path: BabySafe.exe
