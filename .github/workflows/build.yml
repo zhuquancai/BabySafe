@@ -21,14 +21,13 @@ jobs:
       run: |
         g++ src/main.cpp src/adb.cpp src/action.cpp src/config.cpp -o BabySafe.exe -static
 
-    - name: 整理游戏文件
+    - name: 打包游戏
       run: |
         mkdir release
         copy BabySafe.exe release\
         copy config.ini release\
-        xcopy 级别 release\级别 /E /I
 
-    - name: 保存完整游戏
+    - name: 上传游戏
       uses: actions/upload-artifact@v4
       with:
         name: BabySafe完整游戏
