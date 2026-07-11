@@ -1,0 +1,9 @@
+{
+    "level":1,
+    "actions":[
+        {
+            "type":"WAIT",
+            "time":2
+        }
+    ]
+}
