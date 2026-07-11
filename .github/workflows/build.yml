@@ -13,22 +13,25 @@ jobs:
     - name: 下载源码
       uses: actions/checkout@v4
 
-    - name: 安装编译环境
+    - name: 安装MinGW
       run: |
         choco install mingw -y
 
-    - name: 编译游戏
+    - name: 编译程序
       run: |
         g++ src/main.cpp src/adb.cpp src/action.cpp src/config.cpp -o BabySafe.exe -static
 
-    - name: 打包游戏
+    - name: 创建发布目录
       run: |
         mkdir release
         copy BabySafe.exe release\
         copy config.ini release\
 
-    - name: 上传游戏
+        if exist 级别 xcopy 级别 release\级别 /E /I
+        if exist 来源 xcopy 来源 release\来源 /E /I
+
+    - name: 创建压缩包
       uses: actions/upload-artifact@v4
       with:
-        name: BabySafe完整游戏
+        name: BabySafe完整版
         path: release
