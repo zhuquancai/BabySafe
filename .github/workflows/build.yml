@@ -4,33 +4,65 @@ on:
   push:
   workflow_dispatch:
 
+
 jobs:
   build:
+
     runs-on: windows-latest
 
     steps:
 
+    # 下载源码
     - name: 下载源码
       uses: actions/checkout@v4
 
+
+    # 安装编译环境
     - name: 安装MinGW
+      shell: cmd
       run: |
         choco install mingw -y
 
-    - name: 编译程序
+
+    # 编译程序
+    - name: 编译BabySafe
+      shell: cmd
       run: |
         g++ src/main.cpp src/adb.cpp src/action.cpp src/config.cpp -o BabySafe.exe -static
 
+
+    # 创建发布目录
     - name: 创建发布目录
+      shell: cmd
       run: |
         mkdir release
+
+
+    # 复制程序
+    - name: 复制程序文件
+      shell: cmd
+      run: |
         copy BabySafe.exe release\
-        copy config.ini release\
 
-        if exist 级别 xcopy 级别 release\级别 /E /I
-        if exist 来源 xcopy 来源 release\来源 /E /I
 
-    - name: 创建压缩包
+    # 复制配置
+    - name: 复制配置文件
+      shell: cmd
+      run: |
+        if exist config.ini copy config.ini release\
+
+
+    # 复制资源
+    - name: 复制游戏资源
+      shell: cmd
+      run: |
+        if exist assets xcopy assets release\assets\ /E /I /Y
+        if exist resource xcopy resource release\resource\ /E /I /Y
+        if exist data xcopy data release\data\ /E /I /Y
+
+
+    # 上传成品
+    - name: 生成下载包
       uses: actions/upload-artifact@v4
       with:
         name: BabySafe完整版
